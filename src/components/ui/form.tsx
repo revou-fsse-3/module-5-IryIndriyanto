@@ -148,7 +148,7 @@ const FormMessage = React.forwardRef<
   const body = error ? String(error?.message) : children
 
   if (!body) {
-    return null
+    return <p className=" h-4"></p>
   }
 
   return (

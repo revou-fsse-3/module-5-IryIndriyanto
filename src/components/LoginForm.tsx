@@ -21,9 +21,17 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { LOGIN_API_URL, TOKEN_KEY } from "@/utils/constant";
-
+import { useRouter } from "next/router";
 
 const LoginForm = () => {
+  const router = useRouter();
+
+  const isLoggedIn = !!localStorage.getItem('revou-w10-token'); // Check for login token
+
+  if (isLoggedIn) {
+    router.push("/categories"); // Redirect to login page if not logged in
+  }
+
   const formSchema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string().required(),
@@ -37,7 +45,6 @@ const LoginForm = () => {
       password: "",
     },
   });
-
 
   const onSubmit = async (data: formValues) => {
     try {
@@ -53,11 +60,10 @@ const LoginForm = () => {
         const data = await response.json();
         // Optionally, you might handle the successful registration response
         console.log("Login successful:", data);
-        localStorage.setItem(TOKEN_KEY, data.data.token)
-        // navigate("/category");
+        localStorage.setItem(TOKEN_KEY, data.data.token);
+        router.push("/categories");
       } else {
-        // Handle registration failure (e.g., validation errors, server error)
-        throw new Error("Login failed");
+        router.reload();
       }
     } catch (error) {
       console.error("Login error:", error);

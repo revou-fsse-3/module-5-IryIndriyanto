@@ -171,7 +171,7 @@ const CategoryTable = () => {
                       <TableCell className="text-center">
                         {category.id}
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-center truncate w-96 max-w-96">
                         {category.name}
                       </TableCell>
                       <TableCell className="text-center">
