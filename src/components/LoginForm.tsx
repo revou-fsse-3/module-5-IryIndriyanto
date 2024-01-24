@@ -1,15 +1,15 @@
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Input } from "@/components/ui/input";
+import { Input } from '@/components/ui/input'
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -18,58 +18,53 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { LOGIN_API_URL, TOKEN_KEY } from "@/utils/constant";
-import { useRouter } from "next/router";
+} from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import { LOGIN_API_URL, TOKEN_KEY } from '@/utils/constant'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const LoginForm = () => {
-  const router = useRouter();
-
-  const isLoggedIn = !!localStorage.getItem('revou-w10-token'); // Check for login token
-
-  if (isLoggedIn) {
-    router.push("/categories"); // Redirect to login page if not logged in
-  }
+  const router = useRouter()
 
   const formSchema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string().required(),
-  });
+  })
 
-  type formValues = yup.InferType<typeof formSchema>;
+  type formValues = yup.InferType<typeof formSchema>
   const form = useForm<formValues>({
     resolver: yupResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
-  });
+  })
 
   const onSubmit = async (data: formValues) => {
     try {
       const response = await fetch(LOGIN_API_URL, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         // Optionally, you might handle the successful registration response
-        console.log("Login successful:", data);
-        localStorage.setItem(TOKEN_KEY, data.data.token);
-        router.push("/categories");
+        console.log('Login successful:', data)
+        localStorage.setItem(TOKEN_KEY, data.data.token)
+        router.push('/categories')
       } else {
-        router.reload();
+        router.reload()
       }
     } catch (error) {
-      console.error("Login error:", error);
-      throw error;
+      console.error('Login error:', error)
+      throw error
     }
-  };
+  }
 
   return (
     <div className=" flex flex-col justify-center items-center min-h-[92vh] p-8 bg-slate-200">
@@ -120,16 +115,16 @@ const LoginForm = () => {
               <Button className="w-3/4">Login</Button>
               <span className="text-xs">
                 {"Don't have account?"}
-                <a className=" underline " href="/register">
+                <Link className=" underline " href="/register">
                   Register
-                </a>
+                </Link>
               </span>
             </CardFooter>
           </Card>
         </form>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm
