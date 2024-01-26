@@ -40,12 +40,12 @@ export default function Header() {
             >
               Login
             </Link>
-            <a
+            <Link
               className="transition-colors hover:text-foreground/80 text-foreground/60"
               href="/register"
             >
               Register
-            </a>
+            </Link>
           </nav>
         </div>
         <button
